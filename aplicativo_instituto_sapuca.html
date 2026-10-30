@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Sapucaí — Cultura, Território & Articulação</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Archivo Black (Display Monumental), Caveat (Script Editorial), Plus Jakarta Sans (Corpo), Syne (Assinatura) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sapucai: {
+                            950: '#330805', // Vinho profundo para sombras e modais
+                            900: '#470D09', // Tom mais escuro para cards/blocos sobre o fundo vermelho
+                            800: '#58120D', // Tom intermediário de card
+                            700: '#6E1B14', // COR EXATA DO FUNDO DA LOGO DO INSTITUTO SAPUCAÍ
+                            600: '#82221A', // Realce de borda/hover
+                        },
+                        cream: {
+                            50: '#FFFFFF',  // Branco puro para o Script ("Nossa", etc.) destacar no vermelho
+                            100: '#FAF5E4',
+                            200: '#F3E9C6', // Creme amanteigado LxL para títulos monumentais
+                            300: '#E5D8B5', // Texto de leitura clara sobre o vermelho
+                            400: '#C9B89B', // Texto secundário suave
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-sapucai: #6E1B14;
+            --bg-card: #4E100B;
+            --bg-card-hover: #420C08;
+            --text-cream: #F3E9C6;
+            --text-white: #FFFFFF;
+            --text-muted: #DECZAE;
+        }
+
+        body {
+            background-color: var(--bg-sapucai);
+            color: var(--text-cream);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Tipografia Display Monumental (estilo LxL) em Creme (#F3E9C6) */
+        .font-display {
+            font-family: 'Archivo Black', sans-serif;
+            letter-spacing: -0.03em;
+            line-height: 0.94;
+            text-transform: uppercase;
+        }
+
+        .font-syne {
+            font-family: 'Syne', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* Tipografia Cursiva Expressiva em BRANCO PURO para destacar no fundo vermelho da logo */
+        .font-script {
+            font-family: 'Caveat', cursive;
+            color: #FFFFFF;
+            font-weight: 700;
+            line-height: 0.85;
+            text-transform: none;
+            letter-spacing: 0;
+            text-shadow: 0 4px 18px rgba(40, 5, 2, 0.55);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Textura sutil editorial sobre o vermelho Sapucaí */
+        .bg-grain {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        /* Animação suave da linha orgânica SVG */
+        @keyframes floatWave {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .wave-animate {
+            animation: floatWave 6s ease-in-out infinite;
+        }
+
+        @keyframes progressLine {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        .animate-loader {
+            transform-origin: left;
+            animation: progressLine 2.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Degradê inferior editorial nos blocos de manifesto */
+        .manifesto-fade {
+            background: linear-gradient(180deg, #F3E9C6 55%, rgba(243, 233, 198, 0.25) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-grain relative">
+
+    <!-- =================================================================
+         LINHA ORGÂNICA FLUIDA DE FUNDO (Em Branco/Creme translúcido sobre o vermelho)
+         ================================================================= -->
+    <svg class="fixed right-[-65px] top-[36%] w-[360px] h-[260px] pointer-events-none opacity-20 z-0 wave-animate" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 220 C 70 110, 110 280, 165 160 C 220 40, 260 250, 315 130 C 355 45, 385 180, 420 110" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- =================================================================
+         SPLASH SCREEN (FUNDO EXATO DA LOGO — A LOGO FUNDE PERFEITAMENTE!)
+         ================================================================= -->
+    <div id="splash-screen" class="fixed inset-0 z-50 bg-sapucai-700 flex flex-col justify-between p-6 sm:p-10 transition-opacity duration-700">
+        <!-- Topo da Splash -->
+        <div class="w-full max-w-xl mx-auto flex items-center justify-between">
+            <span class="text-[11px] uppercase tracking-[0.2em] text-cream-300 font-medium">Itajubá • Sul de Minas</span>
+            <button onclick="closeSplash()" class="text-xs text-white hover:text-cream-200 transition flex items-center gap-2 font-semibold bg-sapucai-900/50 px-3.5 py-1.5 rounded-full border border-white/15">
+                <span>Entrar</span>
+                <span class="text-white text-base leading-none">&rarr;</span>
+            </button>
+        </div>
+
+        <!-- Centro da Splash: Logo integrada ao fundo vermelho + Tipografia Sobreposta -->
+        <div class="w-full max-w-xl mx-auto my-auto flex flex-col items-center text-center relative">
+            <!-- Como o fundo já é o vermelho da logo, o círculo da logo se integra perfeitamente! -->
+            <div class="w-44 h-44 sm:w-52 sm:h-52 rounded-full overflow-hidden mb-4 flex items-center justify-center">
+                <img id="splash-logo-img" src="logoinst.png" alt="Instituto Sapucaí" class="w-full h-full object-cover scale-[1.06]" onerror="tryNextLogoFormat(this)" />
+                <span id="splash-logo-fallback" class="hidden font-display text-white text-lg">SAPUCAÍ</span>
+            </div>
+
+            <!-- Slogan com sobreposição Script BRANCO + Display CREME (Estilo LxL no fundo vermelho) -->
+            <div class="relative py-2 select-none">
+                <p class="font-display text-xl sm:text-2xl text-cream-200 tracking-tight">CULTURA VIVA.</p>
+                <p class="font-script text-4xl sm:text-5xl text-white -my-3 relative z-10 -rotate-2">Pessoas reais.</p>
+                <p class="font-display text-xl sm:text-2xl text-cream-200 tracking-tight">TERRITÓRIO FORTE.</p>
+            </div>
+
+            <!-- Barra minimalista de entrada em branco -->
+            <div class="w-40 h-[2px] bg-sapucai-900 mt-8 overflow-hidden rounded-full">
+                <div class="w-full h-full bg-white animate-loader"></div>
+            </div>
+        </div>
+
+        <!-- Rodapé Gigante Assinatura -->
+        <div class="w-full max-w-xl mx-auto pt-4 border-t border-white/15 flex items-baseline justify-between overflow-hidden">
+            <div class="flex items-baseline">
+                <span class="font-script text-4xl sm:text-5xl text-white mr-1.5">instituto</span>
+                <span class="font-syne font-extrabold text-3xl sm:text-5xl text-cream-200 tracking-tighter lowercase">sapucaí</span>
+            </div>
+            <span class="text-[11px] text-cream-300 font-medium">2026</span>
+        </div>
+    </div>
+
+    <!-- =================================================================
+         HEADER EDITORIAL MINIMALISTA (Fundo Vermelho Sapucaí)
+         ================================================================= -->
+    <header class="w-full sticky top-0 z-30 bg-sapucai-700/95 backdrop-blur-md border-b border-white/15">
+        <div class="max-w-xl mx-auto px-5 py-3.5 flex items-center justify-between">
+            <!-- Marca + Logo Oficial -->
+            <button onclick="reopenSplash()" class="flex items-center gap-2.5 group text-left" title="Rever abertura com a logo">
+                <div class="w-10 h-10 rounded-full overflow-hidden bg-sapucai-700 ring-1 ring-white/25 shrink-0 group-hover:scale-105 transition">
+                    <img id="header-logo-img" src="logoinst.png" alt="Logo Instituto Sapucaí" class="w-full h-full object-cover scale-[1.06]" onerror="tryNextLogoFormat(this)" />
+                </div>
+                <div class="flex items-baseline">
+                    <span class="font-script text-2xl text-white mr-1 leading-none">inst.</span>
+                    <span class="font-syne font-extrabold text-base text-cream-200 tracking-tight lowercase leading-none">sapucaí</span>
+                </div>
+            </button>
+
+            <!-- Navegação Tipográfica Limpa -->
+            <nav class="flex items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-medium">
+                <button onclick="switchTab('agenda')" id="nav-agenda" class="text-white font-bold border-b-2 border-white pb-0.5 transition">Agenda</button>
+                <button onclick="switchTab('institucional')" id="nav-institucional" class="text-cream-300/80 hover:text-white pb-0.5 transition">O Instituto</button>
+                <button onclick="switchTab('pautas')" id="nav-pautas" class="text-cream-300/80 hover:text-white pb-0.5 transition">Pautas</button>
+                <button onclick="switchTab('rede')" id="nav-rede" class="text-cream-300/80 hover:text-white pb-0.5 transition">Rede</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- =================================================================
+         CONTEÚDO PRINCIPAL (Fundo Vermelho da Logo #6E1B14)
+         ================================================================= -->
+    <main class="w-full max-w-xl mx-auto flex-1 px-5 pt-6 pb-20 relative z-10">
+
+        <!-- =============================================================
+             ABA 1: AGENDA OFICIAL (NOVEMBRO & DEZEMBRO)
+             ============================================================= -->
+        <section id="tab-agenda" class="space-y-10">
+
+            <!-- Cabeçalho Editorial: "Nossa" em BRANCO sobre "AGENDA" em CREME -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center pt-2">
+                <div class="sm:col-span-7 space-y-4">
+                    <div class="relative inline-block">
+                        <span class="font-script text-4xl sm:text-5xl text-white block -mb-3 ml-2 relative z-10 -rotate-3">Nossa</span>
+                        <h1 class="font-display text-4xl sm:text-5xl text-cream-200 tracking-tight">AGENDA</h1>
+                    </div>
+                    <p class="text-xs sm:text-sm text-cream-300 leading-relaxed max-w-sm">
+                        Do samba à permacultura, das oficinas formativas à pesquisa universitária. Programação oficial de Novembro e Dezembro do Instituto Sapucaí.
+                    </p>
+                    <!-- Botões Pílula com alto contraste sobre o fundo vermelho -->
+                    <div class="flex flex-wrap items-center gap-2 pt-1">
+                        <button onclick="setMonthFilter('TODOS')" data-month="TODOS" class="month-pill bg-white text-sapucai-900 text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition shadow-md">
+                            <span>Todos os eventos (9)</span>
+                            <span>&rarr;</span>
+                        </button>
+                        <button onclick="setMonthFilter('NOVEMBRO')" data-month="NOVEMBRO" class="month-pill bg-sapucai-900/70 text-cream-200 hover:bg-sapucai-900 border border-white/15 text-xs font-medium px-3.5 py-2 rounded-lg transition">
+                            Novembro (7)
+                        </button>
+                        <button onclick="setMonthFilter('DEZEMBRO')" data-month="DEZEMBRO" class="month-pill bg-sapucai-900/70 text-cream-200 hover:bg-sapucai-900 border border-white/15 text-xs font-medium px-3.5 py-2 rounded-lg transition">
+                            Dezembro (2)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card Editorial Vertical em Destaque (estilo card "ACTIVATIONS") -->
+                <div class="sm:col-span-5">
+                    <div onclick="openEventModal(1)" class="cursor-pointer group relative rounded-xl overflow-hidden aspect-[4/5] bg-sapucai-950 border border-white/20 shadow-2xl flex flex-col justify-between p-4">
+                        <!-- Fundo atmosférico vinho escuro + árvore da logo -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-sapucai-950 via-sapucai-900/85 to-sapucai-700 opacity-95 group-hover:scale-105 transition duration-500"></div>
+                        <img src="logoinst.png" alt="" class="absolute -right-8 -top-6 w-44 h-44 object-cover rounded-full opacity-35 pointer-events-none" />
+
+                        <div class="relative z-10 flex justify-between items-start">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-white bg-sapucai-950/70 backdrop-blur-xs px-2.5 py-1 rounded border border-white/10">
+                                Abertura • 10 Nov
+                            </span>
+                            <span class="font-script text-2xl text-white">Destaque</span>
+                        </div>
+
+                        <div class="relative z-10 space-y-1">
+                            <p class="text-[11px] text-cream-300 font-medium">Terça-feira • Sede</p>
+                            <div class="flex items-end justify-between gap-2">
+                                <h3 class="font-display text-lg text-cream-200 leading-none">SAMBA NO SAPUCAÍ</h3>
+                                <span class="text-white text-lg font-bold leading-none group-hover:translate-x-1 transition">&rarr;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtro de Busca e Eixos -->
+            <div class="pt-3 border-t border-white/15 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                <div class="relative flex-1">
+                    <input id="search-events" type="text" oninput="renderEvents()" placeholder="Filtrar por nome, data ou parceiro..." class="w-full bg-sapucai-900/80 text-white placeholder-cream-300/60 text-xs px-4 py-2.5 rounded-lg border border-white/15 focus:outline-none focus:border-white transition" />
+                </div>
+                <div class="flex gap-1.5 overflow-x-auto hide-scrollbar" id="category-filters">
+                    <button onclick="setCategoryFilter('Todos')" data-cat="Todos" class="cat-btn text-[11px] font-bold px-3 py-2 rounded-lg bg-cream-200 text-sapucai-950 shrink-0 transition">Todos</button>
+                    <button onclick="setCategoryFilter('Cultura')" data-cat="Cultura" class="cat-btn text-[11px] font-medium px-3 py-2 rounded-lg bg-sapucai-900/70 text-cream-300 hover:text-white border border-white/10 shrink-0 transition">Cultura & Música</button>
+                    <button onclick="setCategoryFilter('Formação')" data-cat="Formação" class="cat-btn text-[11px] font-medium px-3 py-2 rounded-lg bg-sapucai-900/70 text-cream-300 hover:text-white border border-white/10 shrink-0 transition">Oficinas</button>
+                    <button onclick="setCategoryFilter('Rede')" data-cat="Rede" class="cat-btn text-[11px] font-medium px-3 py-2 rounded-lg bg-sapucai-900/70 text-cream-300 hover:text-white border border-white/10 shrink-0 transition">Rede & Território</button>
+                </div>
+            </div>
+
+            <!-- Listagem Editorial dos Eventos -->
+            <div id="events-list" class="space-y-10"></div>
+
+        </section>
+
+        <!-- =============================================================
+             ABA 2: O INSTITUTO (MANIFESTO GIGANTE COM CURSIVA BRANCA)
+             ============================================================= -->
+        <section id="tab-institucional" class="space-y-12 hidden pt-2">
+
+            <!-- Manifesto Tipográfico Centralizado (Estilo 2ª imagem da LxL) -->
+            <div class="relative py-7 px-3 text-center overflow-hidden rounded-2xl bg-sapucai-900/75 border border-white/15 shadow-xl">
+                <div class="max-w-lg mx-auto space-y-1 select-none">
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200">
+                        O INSTITUTO SAPUCAÍ ARTICULA
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200">
+                        CULTURA, FORMAÇÃO E
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200">
+                        <span class="font-script text-4xl sm:text-5xl text-white font-bold mx-1 inline-block -rotate-2">encontros</span> VIVOS NO
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200">
+                        SUL DE MINAS. DO SAMBA À
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200">
+                        PERMACULTURA, DAS OFICINAS
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200">
+                        À PESQUISA COMUNITÁRIA,
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] manifesto-fade">
+                        CONSTRUÍMOS PONTES COM
+                    </p>
+                    <p class="font-display text-2xl sm:text-[31px] text-cream-200/45">
+                        IMPACTO <span class="font-script text-4xl sm:text-5xl text-white font-bold ml-1 inline-block -rotate-2">real.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bloco Institucional com a Logo Oficial + Quem Somos -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center bg-sapucai-900/70 p-6 rounded-2xl border border-white/15">
+                <div class="sm:col-span-4 flex flex-col items-center text-center">
+                    <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-white/25 shadow-xl bg-sapucai-700">
+                        <img src="logoinst.png" alt="Logo Instituto Sapucaí" class="w-full h-full object-cover scale-[1.06]" />
+                    </div>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-cream-300 mt-3">Sede Social • Itajubá</span>
+                </div>
+                <div class="sm:col-span-8 space-y-3">
+                    <div class="relative">
+                        <span class="font-script text-3xl text-white block -mb-2">Quem</span>
+                        <h2 class="font-display text-2xl text-cream-200">SOMOS</h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-cream-300 leading-relaxed">
+                        Uma associação e território livre voltado à produção cultural independente, salvaguarda de saberes tradicionais, ecologia prática e diálogo permanente entre comunidade, coletivos artísticos e universidade.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4 Eixos em Cards Editoriais -->
+            <div class="space-y-4">
+                <div class="flex items-baseline justify-between border-b border-white/15 pb-2">
+                    <h3 class="font-display text-lg text-cream-200">FRENTES DE ATUAÇÃO</h3>
+                    <span class="font-script text-2xl text-white">360° comunitário</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-sapucai-900/75 p-5 rounded-xl border border-white/15 flex flex-col justify-between space-y-4">
+                        <span class="text-xs font-mono text-white font-bold">01 / CULTURA</span>
+                        <div>
+                            <h4 class="font-display text-lg text-cream-200 mb-1">SAMBA & ANCESTRALIDADE</h4>
+                            <p class="text-xs text-cream-300 leading-relaxed">Rodas de samba, vivências de capoeira, feijoadas culturais e ocupação afetiva do espaço comunitário.</p>
+                        </div>
+                    </div>
+                    <div class="bg-sapucai-900/75 p-5 rounded-xl border border-white/15 flex flex-col justify-between space-y-4">
+                        <span class="text-xs font-mono text-white font-bold">02 / FORMAÇÃO</span>
+                        <div>
+                            <h4 class="font-display text-lg text-cream-200 mb-1">OFICINAS & IMERSÕES</h4>
+                            <p class="text-xs text-cream-300 leading-relaxed">Capacitações práticas em fotografia, audiovisual, expressão corporal e educação popular abertas ao território.</p>
+                        </div>
+                    </div>
+                    <div class="bg-sapucai-900/75 p-5 rounded-xl border border-white/15 flex flex-col justify-between space-y-4">
+                        <span class="text-xs font-mono text-white font-bold">03 / ECOLOGIA</span>
+                        <div>
+                            <h4 class="font-display text-lg text-cream-200 mb-1">PERMACULTURA & TERRA</h4>
+                            <p class="text-xs text-cream-300 leading-relaxed">Encontros de permacultura, sustentabilidade urbana e articulação com lideranças e povos originários.</p>
+                        </div>
+                    </div>
+                    <div class="bg-sapucai-900/75 p-5 rounded-xl border border-white/15 flex flex-col justify-between space-y-4">
+                        <span class="text-xs font-mono text-white font-bold">04 / PONTES</span>
+                        <div>
+                            <h4 class="font-display text-lg text-cream-200 mb-1">DIVERSIDADE & PESQUISA</h4>
+                            <p class="text-xs text-cream-300 leading-relaxed">Eventos integrados com coletivos queer (Amantiqueer), rede GOMA e grupos acadêmicos da UNIFEI (GEHFEC).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- =============================================================
+             ABA 3: PAUTAS & OBSERVAÇÕES DE AGENDA
+             ============================================================= -->
+        <section id="tab-pautas" class="space-y-8 hidden pt-2">
+            <div>
+                <span class="font-script text-4xl text-white block -mb-3 ml-1 -rotate-2">Status &</span>
+                <h2 class="font-display text-3xl sm:text-4xl text-cream-200">PAUTAS ABERTAS</h2>
+                <p class="text-xs sm:text-sm text-cream-300 mt-2">
+                    Notas oficiais da produção sobre datas compartilhadas, eventos em análise e mobilizações externas.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Pauta 05/12 -->
+                <div class="bg-sapucai-900/80 p-5 rounded-xl border border-white/15 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-white bg-white/10 px-2.5 py-0.5 rounded">05 DEZ (SÁBADO) • PAUTA LIVRE</span>
+                        <span class="text-[11px] text-cream-300">Dezembro</span>
+                    </div>
+                    <h3 class="font-display text-xl text-cream-200">ANIVERSÁRIO DO GOMA</h3>
+                    <p class="text-xs text-cream-300 leading-relaxed">
+                        Data oficial do Aniversário do GOMA, permanecendo <strong class="text-white">livre para eventos e ações que não conflitem</strong> em horário ou proposta. Coletivos e produtores podem enviar sugestões de ocupação complementar.
+                    </p>
+                    <button onclick="showMsg('Canal de proposta para 05/12 acionado.')" class="bg-white hover:bg-cream-200 text-sapucai-950 text-xs font-bold px-4 py-2 rounded-lg inline-flex items-center gap-2 transition shadow-sm">
+                        <span>Propor atividade não conflitante</span>
+                        <span>&rarr;</span>
+                    </button>
+                </div>
+
+                <!-- Pauta 27/11 -->
+                <div class="bg-sapucai-900/80 p-5 rounded-xl border border-white/15 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-cream-200 bg-white/10 px-2.5 py-0.5 rounded">27 NOV (SEXTA) • DATA EM ANÁLISE</span>
+                        <span class="text-[11px] text-cream-300">Novembro</span>
+                    </div>
+                    <h3 class="font-display text-xl text-cream-200">PONTES CULTURAIS</h3>
+                    <p class="text-xs text-cream-300 leading-relaxed">
+                        A programação do <strong class="text-white">Pontes Culturais</strong> está reservada para sexta-feira, 27/11, encontrando-se atualmente com <strong class="text-white">data em análise</strong> pela equipe de articulação do Instituto.
+                    </p>
+                </div>
+
+                <!-- Pauta 14/11 Externo -->
+                <div class="bg-sapucai-900/80 p-5 rounded-xl border border-white/15 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-cream-200 bg-white/10 px-2.5 py-0.5 rounded">14 NOV (SÁBADO) • AGENDA EXTERNA</span>
+                        <span class="text-[11px] text-cream-300">Novembro</span>
+                    </div>
+                    <h3 class="font-display text-xl text-cream-200">PROJETO CÉLIA XAKRIABÁ</h3>
+                    <p class="text-xs text-cream-300 leading-relaxed">
+                        Mobilização externa apoiada pelo Instituto Sapucaí no sábado (14/11), ocorrendo em paralelo ao segundo dia da Oficina de Fotografia + Baladinha de encerramento na sede.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================
+             ABA 4: REDE & PARCEIROS
+             ============================================================= -->
+        <section id="tab-rede" class="space-y-8 hidden pt-2">
+            <div>
+                <span class="font-script text-4xl text-white block -mb-3 ml-1 -rotate-2">Conexões &</span>
+                <h2 class="font-display text-3xl sm:text-4xl text-cream-200">REDE PARCEIRA</h2>
+                <p class="text-xs sm:text-sm text-cream-300 mt-2">
+                    Coletivos, projetos e instituições que constroem o calendário Nov–Dez junto ao Instituto Sapucaí.
+                </p>
+            </div>
+
+            <!-- Números com tipografia gigante estilo LxL -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="bg-sapucai-900/80 p-4 rounded-xl border border-white/15">
+                    <span class="font-display text-3xl text-cream-200 block">09</span>
+                    <span class="text-[11px] text-cream-300">Datas oficiais Nov/Dez</span>
+                </div>
+                <div class="bg-sapucai-900/80 p-4 rounded-xl border border-white/15">
+                    <span class="font-display text-3xl text-white block">02</span>
+                    <span class="text-[11px] text-cream-300">Imersões de 2 dias</span>
+                </div>
+                <div class="bg-sapucai-900/80 p-4 rounded-xl border border-white/15">
+                    <span class="font-display text-3xl text-cream-200 block">05+</span>
+                    <span class="text-[11px] text-cream-300">Coletivos & Parceiros</span>
+                </div>
+                <div class="bg-sapucai-900/80 p-4 rounded-xl border border-white/15">
+                    <span class="font-display text-3xl text-cream-200 block">100%</span>
+                    <span class="text-[11px] text-cream-300">Cultura independente</span>
+                </div>
+            </div>
+
+            <!-- Lista Editorial de Parceiros do Ciclo -->
+            <div class="divide-y divide-white/15 border-t border-b border-white/15">
+                <div class="py-4 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-display text-base text-cream-200">GEHFEC — UNIFEI</h4>
+                        <p class="text-xs text-cream-300">Universidade Federal de Itajubá • Evento 12/12</p>
+                    </div>
+                    <span class="text-white text-sm font-bold">&rarr;</span>
+                </div>
+                <div class="py-4 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-display text-base text-cream-200">AMANTIQUEER — SASSY UAI</h4>
+                        <p class="text-xs text-cream-300">Arte, Cultura & Diversidade na Mantiqueira • Evento 28/11</p>
+                    </div>
+                    <span class="text-white text-sm font-bold">&rarr;</span>
+                </div>
+                <div class="py-4 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-display text-base text-cream-200">COLETIVO GOMA</h4>
+                        <p class="text-xs text-cream-300">Aniversário do GOMA & Rede Cultural • Evento 05/12</p>
+                    </div>
+                    <span class="text-white text-sm font-bold">&rarr;</span>
+                </div>
+                <div class="py-4 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-display text-base text-cream-200">PROJETO CÉLIA XAKRIABÁ</h4>
+                        <p class="text-xs text-cream-300">Articulação Externa & Direitos Indígenas • Ação 14/11</p>
+                    </div>
+                    <span class="text-white text-sm font-bold">&rarr;</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =================================================================
+         RODAPÉ ASSINATURA EDITORIAL (Cursiva Branca + Syne Creme sobre o Vermelho)
+         ================================================================= -->
+    <footer class="w-full max-w-xl mx-auto px-5 pb-8 pt-6 border-t border-white/15 relative z-10">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+            <div class="flex items-baseline select-none">
+                <span class="font-script text-4xl sm:text-5xl text-white mr-1.5">instituto</span>
+                <span class="font-syne font-extrabold text-3xl sm:text-4xl text-cream-200 tracking-tighter lowercase">sapucaí</span>
+            </div>
+            <div class="text-[11px] text-cream-300 space-y-0.5 sm:text-right">
+                <p>Calendário Oficial • Novembro & Dezembro</p>
+                <p class="text-cream-300/70">Itajubá, Minas Gerais</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =================================================================
+         MODAL EDITORIAL DE DETALHES DO EVENTO
+         ================================================================= -->
+    <div id="event-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-sapucai-900 w-full max-w-lg rounded-t-2xl sm:rounded-2xl overflow-hidden border border-white/25 shadow-2xl">
+            <div class="p-6 space-y-5">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <span id="modal-script-label" class="font-script text-3xl text-white block -mb-2">Novembro</span>
+                        <h3 id="modal-titulo" class="font-display text-2xl sm:text-3xl text-cream-200 leading-none">NOME DO EVENTO</h3>
+                    </div>
+                    <button onclick="closeEventModal()" class="text-cream-200 hover:text-white text-sm font-mono uppercase tracking-widest px-2.5 py-1 border border-white/20 rounded">
+                        [X]
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap gap-2" id="modal-badges"></div>
+
+                <div class="grid grid-cols-2 gap-3 bg-sapucai-950/70 p-4 rounded-xl border border-white/15 text-xs">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-cream-300 block mb-0.5">Data Oficial</span>
+                        <span id="modal-data" class="font-semibold text-white"></span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-cream-300 block mb-0.5">Local / Formato</span>
+                        <span id="modal-local" class="font-semibold text-white"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-cream-300 block mb-1.5">Sobre a Atividade</span>
+                    <p id="modal-descricao" class="text-xs sm:text-sm text-cream-100 leading-relaxed"></p>
+                </div>
+
+                <div class="pt-2 flex items-center gap-3">
+                    <button id="modal-btn-confirm" class="flex-1 bg-white hover:bg-cream-200 text-sapucai-950 text-xs font-bold py-3 px-5 rounded-lg flex items-center justify-center gap-2 transition shadow-md">
+                        <span>Confirmar presença</span>
+                        <span>&rarr;</span>
+                    </button>
+                    <button onclick="closeEventModal()" class="bg-sapucai-950/60 hover:bg-sapucai-950 text-cream-200 text-xs font-medium py-3 px-4 rounded-lg border border-white/15 transition">
+                        Voltar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST MINIMALISTA -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white text-sapucai-950 text-xs font-bold px-5 py-3 rounded-lg shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 flex items-center gap-2">
+        <span id="toast-msg">Confirmado!</span>
+        <span>&rarr;</span>
+    </div>
+
+    <!-- =================================================================
+         JAVASCRIPT (Inclui leitura automática do tom exato de vermelho da logo!)
+         ================================================================= -->
+    <script>
+        const logoCandidates = [
+            'logoinst.png',
+            'logo inst.png',
+            'logoinst.jpg',
+            'logo inst.jpg',
+            'logoinst.svg'
+        ];
+
+        function tryNextLogoFormat(imgEl) {
+            const currentIdx = parseInt(imgEl.dataset.tryIdx || '0', 10);
+            const nextIdx = currentIdx + 1;
+            if (nextIdx < logoCandidates.length) {
+                imgEl.dataset.tryIdx = nextIdx;
+                imgEl.src = logoCandidates[nextIdx];
+            } else {
+                imgEl.classList.add('hidden');
+                const fb = document.getElementById('splash-logo-fallback');
+                if (fb) fb.classList.remove('hidden');
+            }
+        }
+
+        // Extrai automaticamente o pixel vermelho da logo oficial para igualar 100% o fundo!
+        function syncBackgroundWithLogo() {
+            const img = document.getElementById('splash-logo-img');
+            if (!img) return;
+            const applyColor = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 64;
+                    canvas.height = 64;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, 64, 64);
+                    // Coleta um ponto dentro do círculo vermelho da logo (x=32, y=10)
+                    const [r, g, b, a] = ctx.getImageData(32, 10, 1, 1).data;
+                    if (a > 200 && r > 60 && g < 80) {
+                        const hex = `#${[r, g, b].map(x => x.toString(16).padStart(2, '0')).join('')}`;
+                        document.documentElement.style.setProperty('--bg-sapucai', hex);
+                        document.body.style.backgroundColor = hex;
+                        const splash = document.getElementById('splash-screen');
+                        if (splash) splash.style.backgroundColor = hex;
+                    }
+                } catch (e) {
+                    // Se o navegador bloquear canvas local (file://), mantém #6E1B14 que já é o tom exato da logo
+                }
+            };
+            if (img.complete && img.naturalWidth > 0) {
+                applyColor();
+            } else {
+                img.addEventListener('load', applyColor);
+            }
+        }
+
+        function closeSplash() {
+            const splash = document.getElementById('splash-screen');
+            if (!splash) return;
+            splash.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => splash.classList.add('hidden'), 700);
+        }
+
+        function reopenSplash() {
+            const splash = document.getElementById('splash-screen');
+            splash.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                splash.classList.remove('opacity-0', 'pointer-events-none');
+            });
+        }
+
+        // =================================================================
+        // DADOS OFICIAIS DA AGENDA (NOVEMBRO E DEZEMBRO)
+        // =================================================================
+        const eventosData = [
+            // NOVEMBRO
+            {
+                id: 1,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Roda & Encontro',
+                numData: '10.11',
+                diaSemana: 'TERÇA-FEIRA',
+                dataCompleta: '10/11 (Terça-feira)',
+                titulo: 'SAMBA NO SAPUCAÍ',
+                categoria: 'Cultura',
+                local: 'Sede • Instituto Sapucaí',
+                status: 'CONFIRMADO',
+                descricao: 'Roda de samba tradicional na sede do Instituto Sapucaí abrindo a programação de novembro na terça-feira com música, encontro comunitário e valorização da cultura popular.'
+            },
+            {
+                id: 2,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Imersão + Festa',
+                numData: '13—14.11',
+                diaSemana: 'SEXTA E SÁBADO',
+                dataCompleta: '13 e 14/11 (Sexta e Sábado)',
+                titulo: 'OFICINA DE FOTOGRAFIA + ENCERRAMENTO BALADINHA',
+                categoria: 'Formação',
+                local: 'Sede • Instituto Sapucaí',
+                status: 'OFICINA + BALADINHA',
+                descricao: 'Dois dias de formação prática e olhar documental na Oficina de Fotografia (sexta e sábado), celebrando a conclusão das atividades no sábado com baladinha de encerramento.'
+            },
+            {
+                id: 3,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Ação Externa',
+                numData: '14.11',
+                diaSemana: 'SÁBADO',
+                dataCompleta: '14/11 (Sábado)',
+                titulo: 'PROJETO CÉLIA XAKRIABÁ',
+                categoria: 'Rede',
+                local: 'Atividade Externa (Fora da Sede)',
+                status: 'EXTERNO',
+                descricao: 'Articulação e presença institucional junto ao Projeto Célia Xakriabá em atividade externa no sábado (14/11), fortalecendo pontes com direitos originários, território e cultura.'
+            },
+            {
+                id: 4,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Ancestralidade',
+                numData: '21—22.11',
+                diaSemana: 'SÁBADO E DOMINGO',
+                dataCompleta: '21 e 22/11 (Sábado e Domingo)',
+                titulo: 'OFICINA DE CAPOEIRA + SAMBA COM FEIJOADA',
+                categoria: 'Formação',
+                local: 'Sede • Instituto Sapucaí',
+                status: 'FIM DE SEMANA COMPLETO',
+                descricao: 'Fim de semana de imersão na Oficina de Capoeira (sábado e domingo), culminando com grande encerramento em roda de samba acompanhada de feijoada comunitária.'
+            },
+            {
+                id: 5,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Ecologia Prática',
+                numData: '24.11',
+                diaSemana: 'TERÇA-FEIRA',
+                dataCompleta: '24/11 (Terça-feira)',
+                titulo: 'ENCONTRO DE PERMACULTURA',
+                categoria: 'Rede',
+                local: 'Sede • Instituto Sapucaí',
+                status: 'CONFIRMADO',
+                descricao: 'Roda de saberes e vivência prática dedicada à permacultura, regeneração ambiental, cultivo e soluções ecológicas comunitárias na terça-feira.'
+            },
+            {
+                id: 6,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Intercâmbio',
+                numData: '27.11',
+                diaSemana: 'SEXTA-FEIRA',
+                dataCompleta: '27/11 (Sexta-feira)',
+                titulo: 'PONTES CULTURAIS',
+                categoria: 'Cultura',
+                local: 'Instituto Sapucaí',
+                status: 'DATA EM ANÁLISE',
+                descricao: 'Encontro voltado à conexão de agentes culturais e projetos do território. Observação oficial: a data de 27/11 (sexta-feira) encontra-se em análise pela equipe.'
+            },
+            {
+                id: 7,
+                mesGrupo: 'NOVEMBRO',
+                scriptTag: 'Arte & Orgulho',
+                numData: '28.11',
+                diaSemana: 'SÁBADO',
+                dataCompleta: '28/11 (Sábado)',
+                titulo: 'SASSY UAI — AMANTIQUEER',
+                categoria: 'Cultura',
+                local: 'Instituto Sapucaí',
+                status: 'CONFIRMADO',
+                descricao: 'Sábado de celebração, performance e cultura queer no encontro Sassy Uai junto ao coletivo Amantiqueer, encerrando o mês de novembro.'
+            },
+
+            // DEZEMBRO
+            {
+                id: 8,
+                mesGrupo: 'DEZEMBRO',
+                scriptTag: 'Pauta Aberta',
+                numData: '05.12',
+                diaSemana: 'SÁBADO',
+                dataCompleta: '05/12 (Sábado)',
+                titulo: 'ANIVERSÁRIO DO GOMA',
+                categoria: 'Cultura',
+                local: 'Instituto Sapucaí / Rede',
+                status: 'LIVRE P/ NÃO CONFLITANTES',
+                descricao: 'Comemoração do Aniversário do GOMA no primeiro sábado de dezembro. Nota oficial da agenda: data livre para realização de outros eventos que não conflitem.'
+            },
+            {
+                id: 9,
+                mesGrupo: 'DEZEMBRO',
+                scriptTag: 'Universidade Viva',
+                numData: '12.12',
+                diaSemana: 'SÁBADO',
+                dataCompleta: '12/12 (Sábado)',
+                titulo: 'EVENTO GEHFEC UNIFEI',
+                categoria: 'Rede',
+                local: 'Instituto Sapucaí',
+                status: 'PARCERIA UNIFEI',
+                descricao: 'Encontro oficial integrando o grupo GEHFEC da UNIFEI e a comunidade no Instituto Sapucaí, promovendo diálogo entre pesquisa, educação e território.'
+            }
+        ];
+
+        let currentMonth = 'TODOS';
+        let currentCategory = 'Todos';
+
+        function setMonthFilter(month) {
+            currentMonth = month;
+            document.querySelectorAll('.month-pill').forEach(btn => {
+                if (btn.dataset.month === month) {
+                    btn.className = 'month-pill bg-white text-sapucai-900 text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition shadow-md';
+                } else {
+                    btn.className = 'month-pill bg-sapucai-900/70 text-cream-200 hover:bg-sapucai-900 border border-white/15 text-xs font-medium px-3.5 py-2 rounded-lg transition';
+                }
+            });
+            renderEvents();
+        }
+
+        function setCategoryFilter(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-btn text-[11px] font-bold px-3 py-2 rounded-lg bg-cream-200 text-sapucai-950 shrink-0 transition';
+                } else {
+                    btn.className = 'cat-btn text-[11px] font-medium px-3 py-2 rounded-lg bg-sapucai-900/70 text-cream-300 hover:text-white border border-white/10 shrink-0 transition';
+                }
+            });
+            renderEvents();
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('events-list');
+            const query = (document.getElementById('search-events')?.value || '').toLowerCase();
+
+            const filtered = eventosData.filter(ev => {
+                const matchMonth = currentMonth === 'TODOS' || ev.mesGrupo === currentMonth;
+                const matchCat = currentCategory === 'Todos' || ev.categoria === currentCategory;
+                const matchSearch =
+                    ev.titulo.toLowerCase().includes(query) ||
+                    ev.descricao.toLowerCase().includes(query) ||
+                    ev.dataCompleta.toLowerCase().includes(query) ||
+                    ev.status.toLowerCase().includes(query);
+                return matchMonth && matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="py-12 text-center border border-white/15 rounded-xl bg-sapucai-900/50">
+                        <p class="font-script text-3xl text-white">Nenhum resultado</p>
+                        <p class="text-xs text-cream-300 mt-1">Tente outro termo ou selecione Todos os meses.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const meses = ['NOVEMBRO', 'DEZEMBRO'];
+            let html = '';
+
+            meses.forEach(mes => {
+                const evs = filtered.filter(e => e.mesGrupo === mes);
+                if (evs.length === 0) return;
+
+                const subScript = mes === 'NOVEMBRO' ? 'Sete encontros' : 'Dois encontros';
+
+                html += `
+                    <div class="space-y-4">
+                        <!-- Cabeçalho de Mês Editorial -->
+                        <div class="flex items-baseline justify-between border-b border-white/20 pb-2">
+                            <div class="flex items-baseline gap-3">
+                                <h2 class="font-display text-2xl sm:text-3xl text-cream-200">${mes}</h2>
+                                <span class="font-script text-2xl sm:text-3xl text-white">${subScript}</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-cream-300">2026</span>
+                        </div>
+
+                        <!-- Cards de Eventos em Vinho Escuro sobre o Fundo Vermelho da Logo -->
+                        <div class="space-y-3">
+                `;
+
+                evs.forEach(ev => {
+                    const isAlert = ev.status.includes('ANÁLISE') || ev.status.includes('LIVRE') || ev.status.includes('EXTERNO');
+                    const statusColor = isAlert
+                        ? 'text-sapucai-950 bg-cream-200 border-cream-200'
+                        : 'text-white border-white/25 bg-white/10';
+
+                    html += `
+                        <article onclick="openEventModal(${ev.id})" class="group cursor-pointer bg-sapucai-900/75 hover:bg-sapucai-900 border border-white/15 hover:border-white/45 rounded-xl p-4 sm:p-5 transition duration-300 relative overflow-hidden shadow-sm">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                
+                                <!-- Coluna Data Monumental -->
+                                <div class="flex sm:flex-col items-baseline sm:items-start justify-between sm:w-28 shrink-0 border-b sm:border-b-0 sm:border-r border-white/15 pb-2 sm:pb-0 sm:pr-4">
+                                    <span class="font-display text-2xl sm:text-3xl text-cream-200 group-hover:text-white transition leading-none">${ev.numData}</span>
+                                    <span class="text-[10px] font-semibold uppercase tracking-widest text-cream-300 mt-1">${ev.diaSemana}</span>
+                                </div>
+
+                                <!-- Coluna Conteúdo Central -->
+                                <div class="flex-1 min-w-0 space-y-1.5">
+                                    <div class="flex flex-wrap items-center gap-2.5">
+                                        <span class="font-script text-2xl text-white leading-none">${ev.scriptTag}</span>
+                                        <span class="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border ${statusColor}">
+                                            ${ev.status}
+                                        </span>
+                                    </div>
+                                    <h3 class="font-display text-base sm:text-lg text-cream-100 leading-snug">
+                                        ${ev.titulo}
+                                    </h3>
+                                    <p class="text-xs text-cream-300 line-clamp-2 leading-relaxed">
+                                        ${ev.descricao}
+                                    </p>
+                                </div>
+
+                                <!-- Seta Minimalista Direita -->
+                                <div class="flex items-center justify-between sm:justify-end pt-1 sm:pt-0">
+                                    <span class="text-[11px] text-cream-300 sm:hidden">${ev.local}</span>
+                                    <span class="w-9 h-9 rounded-lg bg-sapucai-950/80 group-hover:bg-white text-white group-hover:text-sapucai-950 flex items-center justify-center transition font-bold text-base shrink-0 border border-white/10">
+                                        &rarr;
+                                    </span>
+                                </div>
+
+                            </div>
+                        </article>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function openEventModal(id) {
+            const ev = eventosData.find(e => e.id === id);
+            if (!ev) return;
+
+            document.getElementById('modal-script-label').innerText = ev.scriptTag;
+            document.getElementById('modal-titulo').innerText = ev.titulo;
+            document.getElementById('modal-data').innerText = ev.dataCompleta;
+            document.getElementById('modal-local').innerText = ev.local;
+            document.getElementById('modal-descricao').innerText = ev.descricao;
+
+            document.getElementById('modal-badges').innerHTML = `
+                <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded bg-white text-sapucai-950">${ev.status}</span>
+                <span class="text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded bg-sapucai-950/70 text-cream-200 border border-white/15">${ev.mesGrupo}</span>
+            `;
+
+            const btn = document.getElementById('modal-btn-confirm');
+            btn.onclick = () => {
+                closeEventModal();
+                showMsg('Presença registrada: ' + ev.titulo);
+            };
+
+            const modal = document.getElementById('event-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEventModal() {
+            const modal = document.getElementById('event-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchTab(tabName) {
+            const tabs = ['agenda', 'institucional', 'pautas', 'rede'];
+            tabs.forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('nav-' + t).className = 'text-cream-300/80 hover:text-white pb-0.5 transition';
+            });
+
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            document.getElementById('nav-' + tabName).className = 'text-white font-bold border-b-2 border-white pb-0.5 transition';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showMsg(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            toastMsg.innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            syncBackgroundWithLogo();
+            renderEvents();
+            setTimeout(closeSplash, 2500);
+        });
+    </script>
+</body>
+</html>
